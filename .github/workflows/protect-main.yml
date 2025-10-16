@@ -1,0 +1,20 @@
+name: Protect Main Branch
+
+on:
+  pull_request:
+    branches:
+      - main          # 🔹 triggas varje gång någon öppnar PR mot main
+
+jobs:
+  verify-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check source branch
+        run: |
+          echo "Checking PR source branch..."
+          if [ "${{ github.head_ref }}" != "dev" ]; then
+            echo "❌ Merge denied! You can only merge from the 'dev' branch to 'main'."
+            exit 1
+          else
+            echo "✅ Merge allowed from dev → main."
+          fi
